@@ -44,7 +44,7 @@ export default function Items() {
               </S.ItemRow>
             ))}
             <S.ItemHeaderRow>
-              <S.PriceText>Total: {totalPrice()}</S.PriceText>
+              <S.PriceText id="cart-total">Total: {totalPrice()}</S.PriceText>
             </S.ItemHeaderRow>
           </ul>
         )
