@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { Heading4 } from 'ui-components';
 
-export const ProductRow = styled.li`
+export const ItemRow = styled.li`
   display: flex;
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral[300]}`};
   padding: ${({ theme }) => `${theme.gridSize * 2}px`};
 `
 
-export const ProductHeaderRow = styled.li`
+export const ItemHeaderRow = styled.li`
   display: flex;
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral[300]}`};
   padding: ${({ theme }) => `${theme.gridSize * 2}px`};

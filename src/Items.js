@@ -1,32 +1,31 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Heading4, PText } from 'ui-components';
+import { Heading4 } from 'ui-components';
+import { ProductDetails } from './ProductDetails';
 
 import * as S from "./Items.styles";
 
 export default function Items() {
-  const [products, setProducts] = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(async () => {
-    const productsInCart = JSON.parse(localStorage.getItem('products')) || [];
-    const productsResponse = await Promise.all(productsInCart.map(productId => fetch(`https://fakestoreapi.com/products/${productId}`)));
-    const products = await Promise.all(productsResponse.map(res => res.json()));
+    const cartItems = await fetch(`http://localhost:4000/cart/1/items`).then(res => res.json());
 
     setLoading(false);
-    setProducts(products);
+    setItems(cartItems);
   }, []);
 
-  const removeFromCart = (product) => {
-    const updatedProductsInCart = products.filter(p => p.id !== product.id);
-    setProducts(updatedProductsInCart);
+  const removeFromCart = (item) => {
+    const updatedItemsInCart = items.filter(p => p.id !== item.id);
+    setItems(updatedItemsInCart);
 
-    const removeFromCartEvent = new CustomEvent('REMOVE_FROM_CART', { detail: { productId: product.id } });
+    const removeFromCartEvent = new CustomEvent('REMOVE_FROM_CART', { detail: { itemId: item.id } });
     window.dispatchEvent(removeFromCartEvent);
   }
 
   const totalPrice = useCallback(() => {
-    const price = products.reduce((total, product) => {
-      return total = total + product.price;
+    const price = items.reduce((total, { item }) => {
+      return total = total + item.price;
     }, 0);
     return price.toFixed(2);
   });
@@ -34,33 +33,24 @@ export default function Items() {
   return (
     <>
       {
-        products.length > 0 && !loading && (
+        items.length > 0 && !loading && (
           <ul>
-            <S.ProductHeaderRow>
+            <S.ItemHeaderRow>
               <S.PriceText>Price</S.PriceText>
-            </S.ProductHeaderRow>
-            {products.map((product, index) => (
-              <S.ProductRow key={`${product.id}_${index}`}>
-                <S.Image src={product.image} />
-                <S.Title>
-                  <Heading4>{product.title}</Heading4>
-                  <S.Delete>
-                    <PText onClick={() => removeFromCart(product)}>Remove</PText>
-                  </S.Delete>
-                </S.Title>
-                <strong>
-                  <Heading4>{product.price}</Heading4>
-                </strong>
-              </S.ProductRow>
+            </S.ItemHeaderRow>
+            {items.map((item, index) => (
+              <S.ItemRow key={`${item.id}_${index}`}>
+                <ProductDetails productId={item.item.id} onClickRemove={() => removeFromCart(item)} />                
+              </S.ItemRow>
             ))}
-            <S.ProductHeaderRow>
+            <S.ItemHeaderRow>
               <S.PriceText>Total: {totalPrice()}</S.PriceText>
-            </S.ProductHeaderRow>
+            </S.ItemHeaderRow>
           </ul>
         )
       }
       {
-        products.length === 0 && !loading && (
+        items.length === 0 && !loading && (
           <S.CartEmpty>
             <Heading4>No item in the cart</Heading4>
           </S.CartEmpty>
