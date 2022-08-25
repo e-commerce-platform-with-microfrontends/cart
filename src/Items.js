@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Heading4 } from 'ui-components';
 import { ProductDetails } from './ProductDetails';
+import { API_ROOT } from './env';
 
 import * as S from "./Items.styles";
 
@@ -9,7 +10,7 @@ export default function Items() {
   const [loading, setLoading] = useState(true);
 
   useEffect(async () => {
-    const cartItems = await fetch(`http://localhost:4000/cart/1/items`).then(res => res.json());
+    const cartItems = await fetch(`${API_ROOT.DEV}/cart/1/items`).then(res => res.json());
 
     setLoading(false);
     setItems(cartItems);

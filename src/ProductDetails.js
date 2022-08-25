@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Heading4, PText } from 'ui-components';
 
+import { API_ROOT } from './env';  
 import * as S from "./ProductDetails.styles";
 
 export const ProductDetails = ({ productId, onClickRemove }) => {
   const [product, setProduct] = useState({});
 
   useEffect(async () => {
-    const details = await fetch(`http://localhost:4000/products/${productId}`).then(res => res.json());
+    const details = await fetch(`${API_ROOT.DEV}/products/${productId}`).then(res => res.json());
     setProduct(details);
   }, []);
 
