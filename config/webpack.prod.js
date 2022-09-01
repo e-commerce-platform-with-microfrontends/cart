@@ -10,7 +10,6 @@ const devConfig = {
       template: './public/index.html'
     })  
   ],
-  entry: ['./src/index.js'],
   entry: {
     cart: './src/index.js'
   },
