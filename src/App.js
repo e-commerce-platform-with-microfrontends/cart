@@ -4,6 +4,8 @@ import { theme } from 'ui-components';
 import Items from './Items';
 
 export default () => {
+  console.log
+
   return (
     <div className='container'>
       <ThemeProvider theme={theme}>
